@@ -11,16 +11,16 @@ Created with :blue_heart: by <a href="https://www.linkedin.com/in/anh-nguyen2/">
 
 [//]: # (* [x] List anything else that you can get done to improve the page!)
 
-## Lessons Learned
+## 📘 Lessons Learned
 * <a href="https://stackoverflow.com/questions/42241388/how-to-import-global-scss-file-in-a-react-redux-project#42250516" target="_blank">Import scss to react project</a>.
 * <a href="https://stackoverflow.com/questions/48395804/where-is-create-react-app-webpack-config-and-files" target="_blank">how to locate webpack.config.js</a>
 * <a href="https://momentjs.com" target="_blank">Using momentjs</a> and <a href="https://momentjs.com/timezone/docs/#/use-it/" target="_blank">moment-timezone</a>
 * <a href="https://medium.com/@jaryd_34198/seamless-api-requests-with-react-hooks-part-1-7531849d8381" target="_blank">API request with React Hook</a>
 * <a href="https://reactjs.org/docs/hooks-effect.html" target="_blank">Instead of thinking of useEffect as mounting and updating, useEffect happens after render. React makes sure the DOM has been updated by the time it runs useEffect. Before, DOM is first rendered by render function, side effects are initiated and executed by componentDidMount and componentDidUpdate. As per my understanding, render function now is the first return from React Function component. After that useEffect will execute other functions to update the DOM.</a>
-* The getBgGradient (1hook) ~ #1, 
-getBgGradient called in JSX element (2hook) ~ #2, 
-getBgGradient in useEffect (3hook) ~ #3 
+* The <code></code> getBgGradient (1hook) ~ #1, 
+<code>getBgGradient()</code> in <code>useEffect()</code> (2hook) ~ #2 and #3 
 <pre>
+// In React Hook:
 // 1hook
   const getBgGradient = (hour) => {
           if (hour < 3) {
@@ -44,20 +44,12 @@ getBgGradient in useEffect (3hook) ~ #3
 </pre>
 
 <pre>
-// 2hook
-    return (
-    &lt;div
-       className={`panel ${open ? "open" : ""} ${() => getBgGradient(currentHour)}`}
-    &gt;
-    &lt;/div&gt;
-    )
-    
-// 3hook: useEffect(() => getBgGradient(currentHour));
-
+// 2hook: useEffect(() => getBgGradient(currentHour));
 </pre>
-The main idea of Hook is to reduce the syntax: this.&lt;function name&gt; in #2 and #3, and this.setState in #1. 
-The flow/life cycle is still the same.
+
+💡 <i>The main idea of Hook is to reduce the syntax: this.&lt;function name&gt; in #2 and #3, and this.setState in #1, using <code>useEffect()</code> to hook the intitial render (<code>componentDidMount()</code>) and also re-render updated DOM (<code>componentDidUpdate()</code>) by a second render. The fundamental flow/life cycle of Reactjs is still the same.</i>
 <pre>
+// In normal Reactjs
   1. Update new state (initial state is empty string) for bgGradient ~ Define setGradient function
   setGradient(currentHour) {
       if (currentHour < 3) {
@@ -89,7 +81,46 @@ The flow/life cycle is still the same.
   }
 </pre>
 
-## Describe any challenges encountered while building the app.
+* React Hook with API request: The <code>getWeatherInfo()</code> (1hook) ~ #1, <code>getWeatherInfo()</code> (2hook) ~ #2. There is no <code>componentDidUpdate()</code>.
+
+<pre>
+// In normal Reactjs
+  1.
+  async getWeatherInfo(id) {
+    const res = await fetch(`https://api.openweathermap.org/data/2.5/weather?id=${id}&units=metric&appid=c5baa00af2bfbc51b5a8bff68a069bb0`).then(res => res.json());
+    const weatherInfo = {
+      temp: res.main.temp,
+      desc: res.weather[0].main,
+      icon: `icon-${res.weather[0].icon}`
+    };
+    this.setState({
+      weatherData: weatherInfo
+    })
+  }
+  2.
+  componentDidMount() {
+    const { weatherId } = this.props;
+    this.getWeatherInfo(weatherId);
+    this.setGradient(this.state.currentHour);
+  }
+</pre>
+
+<pre>
+// In React Hook:
+// 1hook.
+  const getWeatherInfo = async (id) => {
+      const url = `https://api.openweathermap.org/data/2.5/weather?id=${id}&units=metric&appid=c5baa00af2bfbc51b5a8bff68a069bb0`
+      const res = await fetch(url).then(res => res.json());
+      const weatherInfo = { temp: res.main.temp,
+                            desc: res.weather[0].main,
+                            icon: `icon-${res.weather[0].icon}`,
+                          };
+      return setWeatherData(weatherInfo);
+  }
+// 2hook: useEffect(() => getWeatherInfo(weatherId))
+</pre>
+
+## 🤐 Describe any challenges encountered while building the app.
 * <code>To import Sass files, you first need to install node-sass. Run `npm install node-sass` or `yarn add node-sass` inside your workspace.</code>
 * <a href="https://stackoverflow.com/questions/51222535/eacces-permission-denied-mkdir-node-modules-node-sass-build-while-running-n" target="_blank">Permission denied while installing node-sass</a>. 
 Solution: 

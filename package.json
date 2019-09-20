@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@babel/types": "^7.6.1",
     "moment": "^2.24.0",
     "moment-timezone": "^0.5.26",
     "node-sass": "^4.12.0",
