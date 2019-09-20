@@ -17,8 +17,11 @@ Created with :blue_heart: by <a href="https://www.linkedin.com/in/anh-nguyen2/">
 * <a href="https://momentjs.com" target="_blank">Using momentjs</a> and <a href="https://momentjs.com/timezone/docs/#/use-it/" target="_blank">moment-timezone</a>
 * <a href="https://medium.com/@jaryd_34198/seamless-api-requests-with-react-hooks-part-1-7531849d8381" target="_blank">API request with React Hook</a>
 * <a href="https://reactjs.org/docs/hooks-effect.html" target="_blank">Instead of thinking of useEffect as mounting and updating, useEffect happens after render. React makes sure the DOM has been updated by the time it runs useEffect. Before, DOM is first rendered by render function, side effects are initiated and executed by componentDidMount and componentDidUpdate. As per my understanding, render function now is the first return from React Function component. After that useEffect will execute other functions to update the DOM.</a>
-* The below Hook getBgGradient ~ #1, getBgGradient called in JSX element ~ #2, getBgGradient in useEffect ~ #3 
-<code>
+* The getBgGradient (1hook) ~ #1, 
+getBgGradient called in JSX element (2hook) ~ #2, 
+getBgGradient in useEffect (3hook) ~ #3 
+<pre>
+// 1hook
   const getBgGradient = (hour) => {
           if (hour < 3) {
             return setGradient('night-2');
@@ -38,10 +41,23 @@ Created with :blue_heart: by <a href="https://www.linkedin.com/in/anh-nguyen2/">
             return setGradient('night-1');
         };
   }
-</code>
+</pre>
+
+<pre>
+// 2hook
+    return (
+    &lt;div
+       className={`panel ${open ? "open" : ""} ${() => getBgGradient(currentHour)}`}
+    &gt;
+    &lt;/div&gt;
+    )
+    
+// 3hook: useEffect(() => getBgGradient(currentHour));
+
+</pre>
 The main idea of Hook is to reduce the syntax: this.&lt;function name&gt; in #2 and #3, and this.setState in #1. 
 The flow/life cycle is still the same.
-<code>
+<pre>
   1. Update new state (initial state is empty string) for bgGradient ~ Define setGradient function
   setGradient(currentHour) {
       if (currentHour < 3) {
@@ -71,7 +87,7 @@ The flow/life cycle is still the same.
     const { timeZone, currentTime } = this.props;
     this.setGradient(this.state.currentHour);
   }
-</code>
+</pre>
 
 ## Describe any challenges encountered while building the app.
 * <code>To import Sass files, you first need to install node-sass. Run `npm install node-sass` or `yarn add node-sass` inside your workspace.</code>
@@ -115,21 +131,21 @@ Third try: Probably, the proper flow is update the state by using built-in funct
 
 * <code>window.setInterval is not a function</code>
 Because of this:
-<code>
-  useEffect(() => {
-    window.setInterval(() => setLocalTime(currentTime.tz(timeZone).format("dddd HH:mm"), 5000));
-  });
-</code>
+<pre>
+useEffect(() => {
+  window.setInterval(() => setLocalTime(currentTime.tz(timeZone).format("dddd HH:mm"), 00));
+});
+</pre>
 
 The original code:
-<code>
+<pre>
 updateCurrentTime() {
     this.setState({ localTime: currentTime.tz(timeZone).format('dddd HH:mm') });
     };
 componentDidMount() {
     window.setInterval(() => this.updateCurrentTime(), 5000);
   };
-</code>
+</pre>
 
 
 ## Version 1.0.0
