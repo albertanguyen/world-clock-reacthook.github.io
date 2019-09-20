@@ -7,7 +7,6 @@ import "../assets/scss/_city.scss";
 import { updateExpression } from "@babel/types";
 
 // FIXME: window.setInterval(updateLocaTime(),5000);
-// FIXME: Unhandled Rejection (TypeError): res.main is undefined, line 71
 // FIXME: bgImg is not used
 
 
@@ -20,11 +19,11 @@ function City(props) {
   const [bgGradient, setGradient] = useState('');
  
   const getWeatherInfo = async (id) => {
-      const url = `https://api.openweathermap.org/data/2.5/weather?id=${id}&units=metric&appid=c5baa00af2bfbc51b5a8bff68a069bb0`
+      const url = `https://api.openweathermap.org/data/2.5/weather?id=${id}&units=metric&appid=c5baa00af2bfbc51b5a8bff68a069bb0`;
       const res = await fetch(url).then(res => res.json());
-      const weatherInfo = { temp: res.main.temp,
-                            desc: res.weather[0].main,
-                            icon: `icon-${res.weather[0].icon}`,
+      const weatherInfo = { "temp": res.main.temp,
+                            "desc": res.weather[0].main,
+                            "icon": `${res.weather[0].icon}.png`,
                           };
       return setWeatherData(weatherInfo);
   }

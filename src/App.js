@@ -21,7 +21,6 @@ function WeatherApp() {
                                         timeZone: 'America/Los_Angeles'
                                         },
                                       })                                   
-   // Similar to componentDidMount and componentDidUpdate, but updating DOM after reder
   useEffect(() => {
     window.setInterval = currentTime/5000;
   });
