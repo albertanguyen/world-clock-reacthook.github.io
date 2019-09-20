@@ -139,29 +139,27 @@ $ sudo npm install --unsafe-perm node-sass
 
 * Import <a href="https://stackoverflow.com/questions/30620684/importing-moment-timzone-and-moment-range-with-webpack-babel-es6" target="_blank">moment-timezone using ES6 syntax</a>
 
-* Violate React Hook Rules (from Pre-try): <q> React Hook "useWeatherInfo" cannot be called inside a callback. React Hooks must be called in a React function component or a custom React Hook function  react-hooks/rules-of-hooks</q>, meaning cannot be called within other functions (ex: useEffect()) inside React functional component, it is only 1 level down from main React Component.
-
-Pre-try: In order to get access to response from API request within React component, we can make use of setWeatherData to update weatherData. Instead of parsing weatherId to setWeatherData, we create a customed Hook useWeatherInfo() and parse that function to setWeatherData 
+* <code> Violate React Hook Rules (from Pre-try): <q> React Hook "useWeatherInfo" cannot be called inside a callback. React Hooks must be called in a React function component or a custom React Hook function  react-hooks/rules-of-hooks</q>, meaning cannot be called within other functions (ex: useEffect()) inside React functional component, it is only 1 level down from main React Component.</code>
+<ol>
+<li>First try: In order to get access to response from API request within React component, we can make use of setWeatherData to update weatherData. Instead of parsing weatherId to setWeatherData, we create a customed Hook useWeatherInfo() and parse that function to setWeatherData 
 Result: !!!! NO!!! cannot call useWeatherInfo within setWeatherData aka a callback function
-
-First try: setWeatherData() within API request (getWeatherInfo()) to udpate weatherData with the response from API request. Then mount getWeatherInfo() within useEffect. After that call keys of object weatherData. ===> crashed Firefox browser due to infinite errors ...
-
-Second try: Define getWeatherInfo() using async function then put it inside useEffect() call. After that returning updated weatherData by using setWeatherData within functional React Component.
+</li>
+<li>Second try: setWeatherData() within API request (getWeatherInfo()) to udpate weatherData with the response from API request. Then mount getWeatherInfo() within useEffect. After that call keys of object weatherData. ===> crashed Firefox browser due to infinite errors ...
+</li>
+<li>Third try: Define getWeatherInfo() using async function then put it inside useEffect() call. After that returning updated weatherData by using setWeatherData within functional React Component.
 
 <code>Error: weatherData is null.</code>
+</li>
+<li>Fourth try: Probably, the proper flow is update the state by using built-in functions <code>set</code> from useState then return the state like normally doing.
+</li>
+</ol>
 
-Third try: Probably, the proper flow is update the state by using built-in functions <code>set</code> from useState then return the state like normally doing.
+❓ Eventually can I use <code>useState()</code> built-in function <code>set</code> within <code>useEffect</code>, updating the state after render? 
+💥 Yes, React will re-rendering DOM twice, first by initiating <code>set</code> function inside <code>useEffect()</code> then excute <code>useEffect()</code> after DOM has been updated. This might create infinite loop like I did (see the error message from my below issue). I think we still need to use a separate function for setState by using <code>set</code> function.
 
-? Eventually can I use useState and its built-in function within useEffect, updating the state after render? Yes, re-rendering DOM twice. I don't know why...
+* <code> React Hook useEffect contains a call to 'setGradient'. Without a list of dependencies, this can lead to an infinite chain of updates. To fix this, pass [weatherId, currentHour, currentTime, timeZone] as a second argument to the useEffect Hook  react-hooks/exhaustive-deps. I got this error message after my first try, normally we don't need to provide arguments to useEffect if it is put within React Function component since we can access the state variables right from useEffect.</code>
 
-* React Hook useEffect contains a call to 'setGradient'. Without a list of dependencies, this can lead to an infinite chain of updates. To fix this, pass [weatherId, currentHour, currentTime, timeZone] as a second argument to the useEffect Hook  react-hooks/exhaustive-deps. I got this error message after my first try, normally we don't need to provide arguments to useEffect if it is put within React Function component since we can access the state variables right from useEffect.
-
-* First render from return of Hook Component returns all output from a function, in order to return each key (ex: icon, temp, desc, temp from weatherData), I can think of 2 possible solutions:
-1. create another state for each key, update the state of each key from new state of weatherData. All happens within React Hook component.
-2. Create a customed Hook outside, return API response, don't let the initial state of weatherData to be empty or null.
-
-* <code>window.setInterval is not a function</code>
-Because of this:
+* <code>window.setInterval is not a function</code>. This is due to this:
 <pre>
 useEffect(() => {
   window.setInterval(() => setLocalTime(currentTime.tz(timeZone).format("dddd HH:mm"), 00));
