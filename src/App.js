@@ -8,25 +8,20 @@ import City from "./components/city";
 
 function WeatherApp() {
   const [currentTime] = useState(moment());
-  const [cities] = useState({'Toronto' : {
-                                          weatherId: 6167865,
+  const [cities] = useState({'Toronto' : {weatherId: 6167865,
                                           timeZone: 'America/Toronto'
-                                        }
-                                        ,
-                                          'Paris': {
-                                          weatherId: 2988507,
-                                          timeZone: 'Europe/Paris'
                                         },
-                                        'Sydney': {
-                                          weatherId: 2147714,
-                                          timeZone: 'Australia/Sydney'
+                            'Paris': {weatherId: 2988507,
+                                      timeZone: 'Europe/Paris'
                                         },
-                                        'San Mateo': {
-                                        weatherId: 5391959,
+                            'Sydney': {weatherId: 2147714,
+                                      timeZone: 'Australia/Sydney'
+                                        },
+                            'San Mateo': {weatherId: 5391959,
                                         timeZone: 'America/Los_Angeles'
                                         },
                                       })                                   
-   // Similar to componentDidMount and componentDidUpdate:
+   // Similar to componentDidMount and componentDidUpdate, but updating DOM after reder
   useEffect(() => {
     window.setInterval = currentTime/5000;
   });
