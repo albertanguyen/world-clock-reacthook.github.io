@@ -178,7 +178,7 @@ componentDidMount() {
 * <code>Unhandled Rejection (TypeError): Cannot read property 'data' of undefined</code>. <br>
 Why? <br> <a href="https://stackoverflow.com/questions/56218517/unhandled-rejection-typeerror-cannot-read-property-data-of-undefined">Because get null object in response</a>.<br>
 Why?<br> Because of this (message from <code>console.log()</code>): 
-<code>"Your account is temporary blocked due to exceeding of requests limitation of your subscription type. Please choose the proper subscription http://openweathermap.org/price"</code>
+<code>"Your account is temporary blocked due to exceeding of requests limitation of your subscription type. Please choose the proper subscription http://openweathermap.org/price"</code> 🤐🤐🤐
 
 ## Version 1.0.0
 Rewrite to React Hook from <a href="https://reactjsexample.com/world-clock-to-include-the-day-of-the-week-and-the-weather/" target="_blank">this Reactjs example</a>
